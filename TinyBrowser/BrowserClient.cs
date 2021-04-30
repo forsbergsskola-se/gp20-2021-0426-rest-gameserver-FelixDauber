@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Net.Sockets;
 
 namespace TinyBrowser
@@ -25,14 +26,13 @@ namespace TinyBrowser
                 // Buffer to store the response bytes.
                 data = new Byte[4096*20];
 
-                // String to store the response ASCII representation.
-                String responseData = String.Empty;
-
-                // Read the first batch of the TcpServer response bytes.
-                Int32 bytes = stream.Read(data, 0, data.Length);
-                responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-                Console.WriteLine("Received: {0}", responseData);
-                lastSites.Add(responseData);
+                var streamReader = new StreamReader(stream);
+                
+                var result = streamReader.ReadToEnd();
+                
+                Console.WriteLine("Received: {0}", result);
+                
+                lastSites.Add(result);
             }
             catch (ArgumentNullException exception)
             {
@@ -44,7 +44,7 @@ namespace TinyBrowser
             }
         }
 
-        void LoadSite(string site)
+        void LoadSite(string site, float httpVersion)
         {
             
         }
