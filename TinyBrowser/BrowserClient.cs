@@ -27,11 +27,24 @@ namespace TinyBrowser
                 }
                 Console.WriteLine("Pick Destination");
 
-                string input = Console.ReadLine();
-                if (int.TryParse(input, out int inputInt))
+                while (true)
                 {
-                    LoadSite(lastSites[^1] + "/" + hyperLinks[inputInt]);
+                    string input = Console.ReadLine();
+                    if (int.TryParse(input, out int inputInt))
+                    {
+                        if (inputInt < hyperLinks.Length - 1 && inputInt >= 0)
+                        {
+                            LoadSite(lastSites[^1] + "/" + hyperLinks[inputInt]);
+                            break;
+                        }
+                        Console.WriteLine("Index value too high/low");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Not a number");
+                    }
                 }
+
                 //break;
             }
         }
