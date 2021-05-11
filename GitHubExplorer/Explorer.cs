@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -14,8 +15,43 @@ namespace GitHubExplorer
         
         //What does this github explorer seek to do...
         //Ask for a user name to explore
+        //Get suggestions for repositories
+        //Pick repository with 1 -> ....
 
-        public string userName = "";
+        public Stack<string> lastSites = new Stack<string>();
+
+        private string currentSite;
+        
+        public string Site
+        {
+            get
+            {
+                return currentSite;
+            }
+            set
+            {
+                lastSites.Push(currentSite);
+                currentSite = value;
+                //Load site
+            }
+        }
+        
+        public string[] SiteExtensions
+        {
+            get
+            {
+                return currentSite.Split("/"); //Need to cut off the HTTP part ahead of this...
+            }
+        }
+
+        public void GoBackToLastSite()
+        {
+            currentSite = lastSites.Pop();
+            //Load site
+        }
+
+        private const string githubSiteName = "https://github.com";
+        private string userName = "";
 
         public void Start()
         {
